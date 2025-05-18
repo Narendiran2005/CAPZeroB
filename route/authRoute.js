@@ -17,10 +17,10 @@ router.use(express.json());
 router.use(express.urlencoded({ extended: true }));
 
 router.post("/login", async (req, res) => {
-    const { email, password } = req.body;
+    const { email, password, role } = req.body;
 
     try {
-        const { user, encryptedToken } = await authenticateUser(email, password);
+        const { user, encryptedToken } = await authenticateUser(email, password, role);
         res.json({ message: "Login successful!", token: encryptedToken });
     } catch (error) {
         console.error("Error during login:", error);

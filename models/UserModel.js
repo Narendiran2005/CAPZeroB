@@ -6,14 +6,14 @@ const { getPool } = require('../config/db');
 const router = express.Router();
 const { v4: uuidv4 } = require('uuid');
 
-const authenticateUser = async (username, password_hased) => {
+const authenticateUser = async (username, password_hased, role) => {
     
     const pool = getPool();
     try {
 
         const [rows, fields] = await pool.execute(
-            "SELECT * FROM users WHERE email = ?",
-            [username]
+            "SELECT * FROM users WHERE email = ? AND role = ?",
+            [username, role]
         );
 
         if (rows.length === 0) {
