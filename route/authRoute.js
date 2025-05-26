@@ -1,5 +1,6 @@
 const express = require("express");
 const cors = require('cors'); 
+const cookie = require("cookie");
 const router = express.Router();
 require("dotenv").config();
 const { authenticateUser, insertUser } = require("../models/UserModel");
@@ -17,8 +18,8 @@ router.use(express.json());
 router.use(express.urlencoded({ extended: true }));
 
 router.post("/login", async (req, res) => {
-    const { email, password, role } = req.body;
-
+   const { email, password, role } = req.body;
+  
     try {
         const { user, encryptedToken } = await authenticateUser(email, password, role);
         res.json({ message: "Login successful!", token: encryptedToken });
@@ -45,6 +46,9 @@ router.post('/register', async (req, res) => {
       res.status(201).json({ message: "User registered successfully", insertId: result.insertId });
     } catch (error) {
       console.error("Insert error:", error);
+      if (error.code === 'ER_DUP_ENTRY') {
+        return res.status(400).json({ error: "Email already exists" });
+      }
       res.status(500).json({ error: "Server error" });
     }
   });

@@ -28,8 +28,8 @@ const authenticateUser = async (username, password_hased, role) => {
             throw new Error('Invalid credentials!');
         }
 
-      
-        const token = jwt.sign({ username: user.username, type: user.role }, "process.env.JWT_SECRET", { expiresIn: "1h" });
+        
+        const token = jwt.sign({ id: user.id, type: user.role }, "process.env.JWT_SECRET", { expiresIn: "1h" });
         const encryptedToken = CryptoJS.AES.encrypt(token, 'process.env.SECRET_KEY').toString();
 
         return { user, encryptedToken };
