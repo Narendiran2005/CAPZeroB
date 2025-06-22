@@ -1,21 +1,21 @@
 const express = require("express");
 const router = express.Router();
 
-const DashboardController = require("../controllers/DashboardController")
+const DashboardController = require("../controllers/StuDashboardController")
 
 // Import necessary modules
 // router.use("/dash", authMiddleware); // Apply auth middleware to all /dash routes
 
-router.get("/basic", DashboardController.getBasicDetails);
+router.get("/student/basic", DashboardController.getStuBasicDetails);
 
-router.get("/stats", async(req, res) => {
+router.get("student/stats", async(req, res) => {
 
 
 
 });
 
 
-router.patch("/edit", async (req, res) => {
+router.patch("student/edit", async (req, res) => {
     // try {
     //     const user = req.user; // Assuming user is set in a middleware
     //     if (!user) {

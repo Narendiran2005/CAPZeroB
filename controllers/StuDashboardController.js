@@ -1,10 +1,11 @@
-const DashboardModel = require('../models/DashboardModel');
+const DashboardModel = require('../models/StuDashboardModel');
 
 // GET /api/dashboard/basic
-const getBasicDetails = async (req, res) => {
+const getStuBasicDetails = async (req, res) => {
   try {
     const user = req.user
-    const data = await DashboardModel.fetchBasicDetails(user);
+    const data = await DashboardModel.fetchStuBasicDetails(user);
+    console.log("Data fetched successfully:", data);
     res.status(200).json(data);
     console.log(data)
   } catch (err) {
@@ -13,7 +14,7 @@ const getBasicDetails = async (req, res) => {
   }
 };
 
-const getContestDetails = async (req, res) => {
+const getStuContestDetails = async (req, res) => {
   try {
     const data = await dashboardModel.fetchContestDetails();
     res.status(200).json(data);
@@ -23,7 +24,7 @@ const getContestDetails = async (req, res) => {
   }
 };
 
-const getHistoricalData = async (req, res) => {
+const getStuHistoricalData = async (req, res) => {
   try {
     const data = await dashboardModel.fetchHistoricalData();
     res.status(200).json(data);
@@ -34,7 +35,7 @@ const getHistoricalData = async (req, res) => {
 };
 
 
-module.exports = {getBasicDetails, getContestDetails, getHistoricalData};
+module.exports = {getStuBasicDetails, getStuContestDetails, getStuHistoricalData};
 
 
 

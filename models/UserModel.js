@@ -6,6 +6,7 @@ const { getPool } = require('../config/db');
 const router = express.Router();
 const { v4: uuidv4 } = require('uuid');
 
+
 const authenticateUser = async (username, password_hased, role) => {
     
     const pool = getPool();
@@ -29,7 +30,7 @@ const authenticateUser = async (username, password_hased, role) => {
         }
 
         
-        const token = jwt.sign({ id: user.id, type: user.role }, "process.env.JWT_SECRET", { expiresIn: "1h" });
+        const token = jwt.sign({ id: user.id, role: user.role }, "process.env.JWT_SECRET", { expiresIn: "1h" });
         const encryptedToken = CryptoJS.AES.encrypt(token, 'process.env.SECRET_KEY').toString();
 
         return { user, encryptedToken };
@@ -42,6 +43,7 @@ const insertUser = async (userObj) => {
    
     const pool = getPool();
      try {
+        
         const id = generateUUID(); // Generate a UUID for the user
         const hashedPassword = await bcrypt.hash(userObj.password, 10); // Hash the password
         const sql = `INSERT INTO users (id, username, email, password_hash, role) VALUES (?, ?, ?, ?, ?)`;
@@ -49,6 +51,11 @@ const insertUser = async (userObj) => {
         const values = [id, userObj.username, userObj.email, hashedPassword, userObj.role];
         console.log(values)
         const [result] = await pool.execute(sql, values);
+        if( userObj.role == "organization") {
+            const sql_or = `INSERT INTO organization_profiles (user_id, name) VALUES (?, ?)`;
+            const values_or = [id, userObj.organizationName];
+            await pool.execute(sql_or, values_or);
+        }
         return result;
     } catch (error) {
         throw error; 

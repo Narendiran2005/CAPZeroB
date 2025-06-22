@@ -43,7 +43,7 @@ router.post('/register', async (req, res) => {
       
   
       const result = await insertUser(user);
-      res.status(201).json({ message: "User registered successfully", insertId: result.insertId });
+      res.status(201).json({ message: "User registered successfully", insertId: result.id });
     } catch (error) {
       console.error("Insert error:", error);
       if (error.code === 'ER_DUP_ENTRY') {
