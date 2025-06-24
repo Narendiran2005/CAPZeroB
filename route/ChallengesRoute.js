@@ -7,4 +7,8 @@ const ChallengesController = require("../controllers/ChallengesController");
 
 router.post("/challenge/create", ChallengesController.CreateChallenge);
 
+router.get("/challenge/register/:id", ChallengesController.RegisterChallenge);
+
+router.get("/challenge/:id", ChallengesController.GetChallenge);
+
 module.exports = router;

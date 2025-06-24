@@ -1,43 +1,21 @@
 const express = require("express");
 const router = express.Router();
 
-const DashboardController = require("../controllers/StuDashboardController")
+const StuDashboardController = require("../controllers/StuDashboardController")
+const OrgDashboardController = require("../controllers/OrgDashboardController");
 
 // Import necessary modules
 // router.use("/dash", authMiddleware); // Apply auth middleware to all /dash routes
 
-router.get("/student/basic", DashboardController.getStuBasicDetails);
-
-router.get("student/stats", async(req, res) => {
-
-
-
+router.get("/basic", (req, res, next) => {
+    // Basic route to get student dashboard data
+    const role = req.user.role; // Assuming req.user is set by an auth middleware
+    if (role === "student") {
+        StuDashboardController.getBasicDashboardData(req, res, next);
+    }else if (role === "organization") {
+        OrgDashboardController.getOrgBasicDashboardData(req, res, next);
+    }
 });
-
-
-router.patch("student/edit", async (req, res) => {
-    // try {
-    //     const user = req.user; // Assuming user is set in a middleware
-    //     if (!user) {
-    //         return res.status(401).json({ error: "Unauthorized" });
-    //     }
-
-    //     // Example: update user dashboard info (customize as needed)
-    //     const { dashboardData } = req.body;
-    //     if (!dashboardData) {
-    //         return res.status(400).json({ error: "No dashboard data provided" });
-    //     }
-
-    //     // TODO: Update dashboard data in your database here
-    //     // Example: await updateDashboard(user.id, dashboardData);
-
-    //     res.json({ message: "Dashboard updated successfully" });
-    // } catch (error) {
-    //     console.error("Error updating dashboard:", error);
-    //     res.status(500).json({ error: "Server error" });
-    // }
-});
-
 
 
 module.exports = router;

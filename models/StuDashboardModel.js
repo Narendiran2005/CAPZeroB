@@ -33,8 +33,8 @@ const fetchStuBasicDetails = async (user) => {
        
        
         return {
-            user: users[0],
-            student: student[0]
+            head: users[0],
+            details: student[0]
         };
 
 

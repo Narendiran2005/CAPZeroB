@@ -35,6 +35,8 @@ const getStuHistoricalData = async (req, res) => {
 };
 
 
+
+
 module.exports = {getStuBasicDetails, getStuContestDetails, getStuHistoricalData};
 
 

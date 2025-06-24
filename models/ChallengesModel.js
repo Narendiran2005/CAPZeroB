@@ -25,4 +25,50 @@ const createModel = async (user, challengedata) => {
         throw error;
     }
 }
-module.exports = {createModel};
+
+const registerChallenge = async (challengeId, user) => {
+    const pool = getPool();
+    try {
+        // Check if the challenge exists
+        const [challenge] = await pool.execute(
+            "SELECT * FROM contests WHERE id = ?",
+            [challengeId]
+        );
+        // check whether challenge completed or not
+        if (challenge.length === 0 || new Date(challenge[0].registration_deadline) < new Date()) {
+            throw new Error("Challenge not found or already completed");
+        }
+        // use triggers to check deadline and max participants and for automate in db
+
+        // Register the user for the challenge
+        await pool.execute(
+            "INSERT INTO contest_registrations (contest_id, user_id) VALUES (?, ?)",
+            [challengeId, user.id]
+        );
+
+        return { message: "Registration successful" };
+    } catch (error) {
+        throw error;
+    }
+}
+
+const getChallengeDetails = async (challengeId) => {
+    const pool = getPool();
+    try {
+        const [challenge] = await pool.execute(
+            "SELECT * FROM contests WHERE id = ?",
+            [challengeId]
+        );
+
+        if (challenge.length === 0) {
+            throw new Error("Challenge not found");
+        }
+        
+        return challenge[0];
+    } catch (error) {
+        throw error;
+    }
+}
+
+module.exports = {createModel, registerChallenge, getChallengeDetails, getChallengeDetails
+};
