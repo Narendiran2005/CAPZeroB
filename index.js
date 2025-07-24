@@ -7,6 +7,8 @@ const dotenv = require('dotenv');
 const DashRoute = require("./route/DashRoute");
 const {authMiddleware, authorizeRoles } = require("./authmiddleware/authMiddleware");
 const ChallengesRoute = require("./route/ChallengesRoute");
+const practiceRoute = require("./route/PracticeRoute");
+const SubmissionController = require("./route/Submisssion.js");
 app.use(express.json());
 app.use(cors());
 
@@ -17,7 +19,9 @@ connectDB();
 
 app.use("/auth", authRoute);
 app.use("/dash", authMiddleware, DashRoute);
-app.use("/api", authMiddleware, authorizeRoles("organization", "Organization"), ChallengesRoute);
+app.use("/api/challenge", authMiddleware, authorizeRoles("organization", "Organization"), ChallengesRoute);
+app.use("/api/practice", authMiddleware, authorizeRoles("organization", "Organization"), practiceRoute);
+app.use("/api/submission", authMiddleware, SubmissionController);
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {

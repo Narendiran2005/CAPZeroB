@@ -34,10 +34,20 @@ const getStuHistoricalData = async (req, res) => {
   }
 };
 
+const updateStuDashboardData = async (req, res) => {
+  try {
+    const user = req.user;
+    const updatedData = req.body; // Assuming the updated data is sent in the request body
+    const result = await DashboardModel.updateStuDashboardData(user, updatedData);  
+  }catch (err) {
+    console.error('Error in updateStuDashboardData:', err.message);
+    res.status(500).json({ error: 'Failed to update dashboard data' });
+  }
+
+}
 
 
-
-module.exports = {getStuBasicDetails, getStuContestDetails, getStuHistoricalData};
+module.exports = {getStuBasicDetails, getStuContestDetails, getStuHistoricalData, updateStuDashboardData};
 
 
 

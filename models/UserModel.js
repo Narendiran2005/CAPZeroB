@@ -46,11 +46,18 @@ const insertUser = async (userObj) => {
         
         const id = generateUUID(); // Generate a UUID for the user
         const hashedPassword = await bcrypt.hash(userObj.password, 10); // Hash the password
-        const sql = `INSERT INTO users (id, username, email, password_hash, role) VALUES (?, ?, ?, ?, ?)`;
+        const sql = `INSERT INTO users (id, username, email, password_hash, role ) VALUES (?, ?, ?, ?, ?)`;
         
         const values = [id, userObj.username, userObj.email, hashedPassword, userObj.role];
         console.log(values)
         const [result] = await pool.execute(sql, values);
+        if (userObj.role == "student") {
+            const sql_st = `INSERT INTO student_profiles (user_id, full_name, gender) VALUES (?, ?, ?)`;
+            const values_st = [id, userObj.fullname, userObj.gender];
+            await pool.execute(sql_st, values_st);
+        
+        }
+
         if( userObj.role == "organization") {
             const sql_or = `INSERT INTO organization_profiles (user_id, name) VALUES (?, ?)`;
             const values_or = [id, userObj.organizationName];

@@ -76,9 +76,27 @@ const fetchStuHistoricalData = async () => {
  
 };
 
+const updateStuDashboardData = async (user, updatedData) => {
+    const pool = getPool();
+    try {
+        // Validate the updatedData object to ensure it contains the necessary fields
+        if (!updatedData || !updatedData.name || !updatedData.gender || !user){
+            throw new Error('Invalid data provided for update');
+        }
+         // Assuming the updated data is sent in the request body
+        const sql = "UPDATE student_profiles SET full_name = ?, bio = ?, gender = ?, location = ?, website = ?, github_url = ?, linkedin_url = ? WHERE user_id = ?";
+        const values = [updatedData.name, updatedData.bio, updatedData.gender, updatedData.location, updatedData.website, updatedData.github, updatedData.linkedin, user.id];
+        // Execute the SQL query with the provided values
+        const [result] = await pool.execute(sql, values);        
+    } catch (error) {
+        throw error; 
+    }  
+
+}
 
 
-module.exports = {fetchStuBasicDetails, fetchStuContestDetails, fetchStuHistoricalData};
+
+module.exports = {fetchStuBasicDetails, fetchStuContestDetails, fetchStuHistoricalData, updateStuDashboardData};
 
 // // 2. Contest details (e.g., active, upcoming, leaderboard)
 

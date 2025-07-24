@@ -1,4 +1,3 @@
-const e = require("express");
 const express = require("express");
 const { getPool } = require('../config/db'); 
 const router = express.Router();
@@ -70,5 +69,4 @@ const getChallengeDetails = async (challengeId) => {
     }
 }
 
-module.exports = {createModel, registerChallenge, getChallengeDetails, getChallengeDetails
-};
+module.exports = {createModel, registerChallenge, getChallengeDetails};
